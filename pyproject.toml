@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=75,<85"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zotero-file-explorer"
+dynamic = ["version"]
+description = "Read-only Zotero original attachment browser for Windows"
+requires-python = ">=3.11,<3.15"
+dependencies = ["PySide6-Essentials==6.10.2"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.4,<10", "pytest-qt>=4.5,<5", "ruff>=0.14,<0.16", "Pillow>=11,<13", "pyinstaller>=6.16,<7", "psutil>=7,<8"]
+
+[project.gui-scripts]
+zotero-file-explorer = "zotero_file_explorer.app:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+qt_api = "pyside6"
+addopts = "--basetemp=build/pytest"
+markers = ["live: read-only integration against running Zotero", "windows: Windows native integration"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.setuptools.dynamic]
+version = {attr = "zotero_file_explorer.__version__"}
+
+[tool.setuptools.data-files]
+"share/zotero_file_explorer/assets/icons" = ["assets/icons/app.ico", "assets/icons/app.png"]

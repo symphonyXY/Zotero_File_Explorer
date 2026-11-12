@@ -1,0 +1,51 @@
+{
+  "installer_sha256": "5de22b2c5449f6e2237e4b5e38d3fc81136255b38fe39314fdb805c6e9171c72",
+  "isolated_identity": true,
+  "note": "Same payload and ISS; test-only AppId and all shortcut suffixes isolate user installs.",
+  "fresh_install_without_desktop": true,
+  "unrelated_desktop_link_preserved": true,
+  "selected_desktop_created": true,
+  "legacy_desktop_refreshed_with_task_off": true,
+  "start_menu_shortcuts": [
+    true,
+    true
+  ],
+  "shortcut_icon_file": "icons/app-775ae564d28ca48a6fc9f71b93b7039dfc2221fd062b428726c089b2f3bbac0f.ico",
+  "shortcut_icon_sha256": "775ae564d28ca48a6fc9f71b93b7039dfc2221fd062b428726c089b2f3bbac0f",
+  "installed_self_check": {
+    "version": "1.0.0",
+    "qt_application_version": "1.0.0",
+    "icon_loaded": true,
+    "offline_count": 0,
+    "file_urls": 1,
+    "python_bundled": true,
+    "source_module": "app.py"
+  },
+  "installed_exe_sha256": "9331c396d41747bcfeadb83f9afbb5f845fc45c58daf5f25661def35e9209df2",
+  "uninstall_removed_exe": true,
+  "uninstall_removed_shortcuts": true,
+  "uninstall_removed_icon": true,
+  "application_data_retained": true,
+  "production_reinstall": {
+    "exit_code": 0,
+    "existing_desktop_task_unselected": true,
+    "desktop_icon_matches_source": true,
+    "explorer_visual_matches_source": true,
+    "installed_exe_matches_build": true,
+    "no_global_cache_purge": true,
+    "installer_sha256": "2b2f3b0f54be4e77234db260984abcdf9abea7611e4ef32e9fda7cf084262582",
+    "start_menu_icon_matches_source": [
+      true,
+      true
+    ],
+    "installed_self_check": {
+      "version": "1.0.0",
+      "qt_application_version": "1.0.0",
+      "icon_loaded": true,
+      "offline_count": 0,
+      "file_urls": 1,
+      "python_bundled": true,
+      "source_module": "app.py"
+    }
+  }
+}

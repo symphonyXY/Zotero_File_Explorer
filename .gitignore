@@ -1,0 +1,30 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+build/
+dist/
+*.egg-info/
+.coverage
+htmlcov/
+backups/
+work/
+# Keep unreviewed design inputs out of publication.
+/assets/icons/concepts/
+*.log
+*.sqlite
+*.sqlite3
+*.sqlite-wal
+*.sqlite-shm
+.idea/
+.vscode/
+docs/evidence/*private*
+
+# Local release archives: only reviewed notes/checksums enter Git.
+/releases/*
+!/releases/README.md
+!/releases/v*/
+/releases/v*/**
+!/releases/v*/README.md
+!/releases/v*/SHA256SUMS.txt

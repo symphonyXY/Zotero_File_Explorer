@@ -1,0 +1,16 @@
+{
+  "language": "zh_CN",
+  "api_url": "http://127.0.0.1:23119/api/",
+  "data_directory": "",
+  "attachment_base": "",
+  "poll_seconds": 60,
+  "hotkey": "Ctrl+Alt+Z",
+  "close_to_tray": true,
+  "quick_on_top": true,
+  "theme": "system",
+  "motion": "full",
+  "animation_speed": 1.0,
+  "rules": [],
+  "hidden_columns": [3, 5, 6, 7],
+  "window_layouts": {}
+}

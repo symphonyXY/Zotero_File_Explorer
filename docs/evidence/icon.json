@@ -1,0 +1,46 @@
+{
+  "source": "assets/icons/app-source.png",
+  "source_sha256": "0dc3018ffcbcccbcd2c71eaee39f3ecde55e1aa060457a6815e2ce051828cee8",
+  "origin": "User-selected AI-generated concept 06-fusion-minimal (2026-11-12)",
+  "license": "MIT; project artwork, not an official Zotero logo",
+  "dimensions": [
+    1254,
+    1254
+  ],
+  "outputs": {
+    "assets/icons/app.ico": "775ae564d28ca48a6fc9f71b93b7039dfc2221fd062b428726c089b2f3bbac0f",
+    "assets/icons/app.png": "069b18873a61da6936016bfa06236f80d4e772aaeb6f7287373596a5e66737e2"
+  },
+  "sizes": [
+    [
+      16,
+      16
+    ],
+    [
+      24,
+      24
+    ],
+    [
+      32,
+      32
+    ],
+    [
+      48,
+      48
+    ],
+    [
+      64,
+      64
+    ],
+    [
+      128,
+      128
+    ],
+    [
+      256,
+      256
+    ]
+  ],
+  "qt_load": true,
+  "alpha_preserved": true
+}

@@ -1,0 +1,240 @@
+"""Small centralized catalog: every product label has Chinese and English text."""
+
+CATALOG = {
+    "workspace": ("文献工作区", "LIBRARY WORKSPACE"),
+    "tools": ("工具", "TOOLS"),
+    "any_tag": ("不限", "Any tag"),
+    "search_name": ("搜索文献", "Search papers"),
+    "navigation": ("文献库与分类", "Libraries and categories"),
+    "results": ("文献与附件列表", "Papers and attachments"),
+    "searching": ("正在查询…", "Searching…"),
+    "search_complete": ("查询完成 · {count} 篇文献", "Search complete · {count} papers"),
+    "search_failed": (
+        "查询失败，已保留当前列表。请重试。",
+        "Search failed. The current list has been kept. Please retry.",
+    ),
+    "retry": ("重试查询", "Retry search"),
+    "reset_layout": ("恢复默认布局", "Reset layout"),
+    "retained_counts": ("上次结果：{counts}", "Previous results: {counts}"),
+    "select_original": (
+        "请先选中当前结果中的可用原件。", "Select an available original in the current results.",
+    ),
+    "select_attachment": (
+        "请先选中当前结果中的可用附件。", "Select an available attachment in the current results.",
+    ),
+    "motion": ("动画效果（尊重系统设置）", "Motion (respects system settings)"),
+    "motion_full": ("完整动画", "Full motion"),
+    "motion_reduced": ("减少动画", "Reduced motion"),
+    "motion_off": ("关闭非必要动画", "Nonessential motion off"),
+    "animation_speed": ("动画速度", "Animation speed"),
+    "checking_files": ("正在检查文件，可继续浏览…", "Checking files; you can continue browsing…"),
+    "app": ("Zotero File Explorer", "Zotero File Explorer"),
+    "subtitle": ("原始文献，随手可用", "Your original papers, within reach"),
+    "all": ("全部文献", "All papers"),
+    "personal": ("个人文献库", "My library"),
+    "groups": ("群组文献库", "Group libraries"),
+    "collections": ("分类目录", "Collections"),
+    "unfiled": ("未分类文献", "Unfiled papers"),
+    "review": ("待确认附件", "Needs review"),
+    "translated": ("翻译与加工产物", "Translated and processed"),
+    "errors": ("文件异常", "Unavailable files"),
+    "settings": ("设置", "Settings"),
+    "refresh": ("立即同步", "Sync now"),
+    "quick": ("快捷窗口", "Quick window"),
+    "main": ("主窗口", "Main window"),
+    "search": (
+        "搜索标题、作者、年份、DOI、标签或文件名…",
+        "Search title, author, year, DOI, tag or filename…",
+    ),
+    "library": ("文献库", "Library"),
+    "all_libraries": ("全部文献库", "All libraries"),
+    "all_types": ("全部类型", "All file types"),
+    "year": ("年份", "Year"),
+    "tag": ("标签", "Tag"),
+    "available_only": ("仅可用原件", "Available originals only"),
+    "title": ("文献标题 / 附件", "Paper / attachment"),
+    "authors": ("作者", "Authors"),
+    "doi": ("DOI", "DOI"),
+    "type": ("类型", "Type"),
+    "filename": ("真实文件名", "Actual filename"),
+    "size": ("大小", "Size"),
+    "status": ("状态", "Status"),
+    "available": ("可用", "Available"),
+    "missing": ("文件缺失 / 不可访问", "Missing / inaccessible"),
+    "permission": ("无读取权限", "Read permission denied"),
+    "not_downloaded": ("未下载 / 路径不可用", "Not downloaded / path unavailable"),
+    "no_original": ("无已确认原件", "No confirmed original"),
+    "original": ("原始附件", "Original"),
+    "excluded": ("不支持的类型", "Unsupported type"),
+    "open": ("打开文件", "Open file"),
+    "copy_files": ("复制文件", "Copy files"),
+    "copy_paths": ("复制文件路径", "Copy file paths"),
+    "copy_names": ("复制文件名", "Copy filenames"),
+    "reveal": ("在资源管理器中选中", "Show in Explorer"),
+    "folder": ("打开所在文件夹", "Open containing folder"),
+    "relocate": ("重新定位文件…", "Relocate file…"),
+    "primary": ("设为主附件", "Set as main attachment"),
+    "mark_original": ("确认是原始附件", "Mark as original"),
+    "mark_translated": ("确认是翻译文件", "Mark as translated"),
+    "auto_classify": ("清除手动分类并重新识别", "Reset manual classification"),
+    "details": ("查看文件与判定详情", "File and classification details"),
+    "reason": ("判定原因", "Classification reason"),
+    "path": ("真实路径", "Actual path"),
+    "attachment_title": ("附件标题", "Attachment title"),
+    "rules": ("翻译过滤规则", "Translation filters"),
+    "add": ("添加", "Add"),
+    "delete": ("删除规则", "Delete rule"),
+    "defaults": ("恢复默认", "Restore defaults"),
+    "enabled": ("启用", "Enabled"),
+    "name": ("规则名称", "Rule name"),
+    "pattern": ("通配符模式", "Glob pattern"),
+    "target": ("匹配字段", "Match field"),
+    "result": ("判定结果", "Result"),
+    "test": ("测试规则", "Test rules"),
+    "rule_help": (
+        "使用 * 和 ? 通配符，忽略大小写。规则按表中顺序匹配；手动确认优先。默认源码识别始终保留。",
+        "Use * and ? wildcards, case insensitive. First matching rule wins; "
+        "manual decisions take priority. Built-in detection remains active.",
+    ),
+    "test_filename": ("测试真实文件名", "Test actual filename"),
+    "test_title": ("测试附件标题", "Test attachment title"),
+    "no_rule_match": (
+        "没有自定义规则匹配，使用内置识别。",
+        "No custom rule matched; built-in detection applies.",
+    ),
+    "save": ("保存", "Save"),
+    "cancel": ("取消", "Cancel"),
+    "close": ("关闭", "Close"),
+    "language": ("界面语言", "Language"),
+    "theme": ("主题", "Theme"),
+    "system": ("跟随系统", "Follow system"),
+    "light": ("浅色", "Light"),
+    "dark": ("深色", "Dark"),
+    "api_url": ("本机 API 地址", "Local API URL"),
+    "data_directory": ("Zotero 数据目录", "Zotero data directory"),
+    "attachment_base": ("链接附件基础目录", "Linked attachment base directory"),
+    "browse": ("浏览…", "Browse…"),
+    "detect": ("自动检测", "Auto detect"),
+    "poll": ("同步间隔（秒）", "Polling interval (seconds)"),
+    "hotkey": ("全局快捷键", "Global shortcut"),
+    "close_to_tray": ("关闭主窗口时隐藏到托盘", "Hide to tray when closing main window"),
+    "autostart": ("登录 Windows 后自动启动", "Start when signing into Windows"),
+    "top": ("置顶", "Always on top"),
+    "rebuild": ("重建本软件索引", "Rebuild this app's index"),
+    "rebuild_help": (
+        "将清空本软件的元数据索引并重新同步，保留手动确认和路径映射。Zotero 数据不受影响。",
+        "Clears this app's metadata index and resyncs. Manual decisions and path mappings "
+        "are retained. Zotero data is unaffected.",
+    ),
+    "confirm": ("确认", "Confirm"),
+    "quit": ("退出程序", "Quit"),
+    "offline": ("离线 · 使用最近索引", "Offline · using cached index"),
+    "online": ("已同步", "Synced"),
+    "syncing": ("正在同步…", "Syncing…"),
+    "api_disabled": (
+        "Zotero 拒绝访问 (403)。请到 Zotero 设置 → 高级，开启允许本机其他应用通信。",
+        "Zotero denied access (403). In Zotero Settings → Advanced, "
+        "allow other applications on this computer to communicate.",
+    ),
+    "instance_changed": ("Zotero 实例已变化，正在重新连接。", "Zotero instance changed; reconnecting."),
+    "library_changed_during_sync": (
+        "同步期间文献库有变化，将重试。",
+        "Library changed during sync; will retry.",
+    ),
+    "unsupported_api": (
+        "当前 Zotero 未支持所需 API。请检查 Zotero 版本。",
+        "Required API is unsupported. Check the Zotero version.",
+    ),
+    "api_error": (
+        "本机 API 请求失败。请刷新或检查连接设置。",
+        "Local API request failed. Refresh or check connection settings.",
+    ),
+    "error": ("操作提示", "Attention"),
+    "no_available_files": (
+        "没有可操作的原始文件。请检查下载、路径和访问权限。",
+        "No available original file. Check download, path and read permissions.",
+    ),
+    "empty": ("没有匹配的文献。可调整搜索和筛选条件。", "No matching papers. Adjust your search or filters."),
+    "first_run": (
+        "尚无索引。请启动 Zotero，在“设置 → 高级”开启本机通信，然后点击“立即同步”。",
+        "No index yet. Start Zotero, allow local communication in Settings → Advanced, then choose Sync now.",
+    ),
+    "copied": (
+        "已复制 {count} 个真实文件，可在资源管理器中粘贴。",
+        "Copied {count} real file(s). Paste in Explorer.",
+    ),
+    "counts": (
+        "{count} 篇文献 · 已显示 {shown} 篇 · 选中 {selected} 行",
+        "{count} papers · {shown} shown · {selected} rows selected",
+    ),
+    "more": ("下一页", "Next page"),
+    "previous": ("上一页", "Previous page"),
+    "columns": ("显示列", "Visible columns"),
+    "hotkey_failed": (
+        "快捷键注册失败，可能已被占用。请在设置中更换快捷键。",
+        "Shortcut registration failed; it may be in use. Choose another shortcut in Settings.",
+    ),
+    "index_recovered": (
+        "索引损坏，已保留损坏文件并建立新索引。请重新同步；手动设置仍保留。",
+        "Damaged index was preserved and a new index created. Resync; manual settings are retained.",
+    ),
+    "overrides_invalid": (
+        "手动设置文件无法读取。已保留原文件，暂不允许覆盖，请检查 overrides.json。",
+        "Manual settings cannot be read. Original file is preserved; "
+        "check overrides.json before overwriting.",
+    ),
+    "config_invalid": (
+        "配置无法读取，已使用默认设置；保存时将保留旧文件。",
+        "Settings could not be read. Defaults are active; saving preserves the old file.",
+    ),
+    "invalid_settings": (
+        "设置无效，请检查 API 地址、快捷键、目录与规则。",
+        "Invalid settings. Check API URL, shortcut, directories and rules.",
+    ),
+    "legacy": (
+        "兼容模式：当前 API 不提供实例标识，使用完整同步。",
+        "Compatibility mode: API has no instance ID; using full sync.",
+    ),
+    "last_sync": ("最近同步：{time}", "Last sync: {time}"),
+    "no_path": ("没有可用路径", "No available path"),
+    "manual": ("用户手动确认", "Manual decision"),
+    "supported_no_product_marker": (
+        "支持的文献类型，未检测到翻译产物标记",
+        "Supported document with no detected product marker",
+    ),
+    "unsupported_type": ("不支持的附件类型或纯链接", "Unsupported attachment type or web link"),
+    "translation_title": (
+        "附件标题含翻译提示，缺少足够证据",
+        "Title suggests translation; evidence is insufficient",
+    ),
+    "pdf2zh_suffix": ("已核实的 PDF2zh 产物后缀", "Verified PDF2zh product suffix"),
+    "ambiguous_suffix": (
+        "可能为旧版产物，也可能是正常文件名",
+        "Possible legacy product or legitimate filename",
+    ),
+    "rule": ("用户过滤规则", "User filter rule"),
+    "read_only": (
+        "只读 Zotero · 附件始终保留在原位置",
+        "Read-only Zotero · attachments stay in their original location",
+    ),
+    "reconnecting": ("正在连接 Zotero…", "Connecting to Zotero…"),
+    "busy": ("后台任务尚在完成，请稍候。", "Background work is still finishing. Please wait."),
+}
+
+
+class Translator:
+    def __init__(self, language: str = "zh_CN"):
+        self.language = language
+
+    def __call__(self, key: str, **values) -> str:
+        pair = CATALOG.get(key)
+        text = (
+            pair[1 if self.language == "en" else 0]
+            if pair
+            else CATALOG["api_error"][1 if self.language == "en" else 0]
+        )
+        return text.format(**values)
+
+    def reason(self, code: str) -> str:
+        key, _, detail = code.partition(":")
+        return self(key) + (" · " + detail if detail else "")
