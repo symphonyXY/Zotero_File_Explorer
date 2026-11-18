@@ -7,7 +7,7 @@
 从托盘退出 Explorer，运行 ZoteroFileExplorer-1.1.0-Setup-x64.exe。
 也可运行 app/ZoteroFileExplorer/ZoteroFileExplorer.exe，请保留完整应用目录。
 
-[安装说明](app/ZoteroFileExplorer/docs/user/installation.md) · [使用指南](app/ZoteroFileExplorer/docs/user/user-guide.md)
+[安装说明](https://github.com/symphonyXY/Zotero_File_Explorer/blob/main/docs/user/installation.md) · [使用指南](https://github.com/symphonyXY/Zotero_File_Explorer/blob/main/docs/user/user-guide.md)
 
 ## 本版变化
 

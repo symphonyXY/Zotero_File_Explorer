@@ -1,4 +1,4 @@
-94f6ed59d1ee1fdc41a5d710c213d5e803a32571d95bdc629ce1d91c929bbf18  README.md
+a2c4503cf23579022b6b92b9887e4864d73bb2ff14c39b3afa9d7883fcac2845  README.md
 9c11c76d1ea66afcf1fad4cd1e2e2b10b77dd447f0b76d5ccf60dc5d4ca79e05  ThirdPartySources/manifest.json
 05eec38bb71bffff8860786e3c0766cc4b86affc72439bd246c54889bdcb7400  ThirdPartySources/pyside-setup-everywhere-src-6.10.2.tar.xz
 aeb78d29291a2b5fd53cb55950f8f5065b4978c25fb1d77f627d695ab9adf21e  ThirdPartySources/qtbase-everywhere-src-6.10.2.tar.xz
