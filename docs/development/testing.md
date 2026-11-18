@@ -38,9 +38,9 @@ CI 在 pytest 前显式创建 `build`：全新检出不包含这个被忽略的�
 需覆盖桌面选项关闭、同名外部快捷方式、勾选创建，以及遗留默认 EXE 图标在关闭选项重装时迁移；核对实际 .lnk 的目标和图标哈希，并验证卸载。
 Shell 接收端探针在 DragEnter/DragOver 中传递 MK_LBUTTON | MK_CONTROL，Drop 时释放左键并保留 Ctrl。
 探针保持 20 秒超时，验证实时 Qt 和固化剪贴板两种路径；按下和释放状态必须与实际拖放一致。
-测试继续核对目标文件内容和源文件哈希；详见[本版验证](../reports/validation-v1.0.0.md)。每轮仍需报告实际通过/失败/未执行。
+测试继续核对目标文件内容和源文件哈希。每轮记录通过、失败和未执行项。
 跨应用鼠标拖放、Shift 拖动、多文件、中文/空格路径、取消行为与源文件哈希需在交互 Windows 中另验。
-本版实际结果见[验证报告](../reports/validation-v1.0.0.md)，后续结果维护于[报告索引](../reports/README.md)。
+各版本的兼容性边界见[版本说明](../releases/README.md)。
 
 ## 人工拖放验收
 
@@ -58,6 +58,14 @@ Shell 接收端探针在 DragEnter/DragOver 中传递 MK_LBUTTON | MK_CONTROL，
 数据目录和报告必须是新路径，拒绝覆盖。工具仅创建合成库，报告区分模型填充、CPU paint、事件循环和动画对象数。
 模拟 500 / 5,000 / 20,000 篇；区分模型填充、CPU paint、事件循环和 compositor/display FPS。
 不要覆盖历史结果；原始运行输出优先写 build，审查隐私后才将必要汇总放 docs/evidence。
-不更改用户 Zotero 库；live_probe 只读，修改型场景由模拟服务提供。
+常规测试使用合成库，live_probe 只读。Paper Cards 的真实创建、更新和跨设备验收由独立脚本显式启动，
+步骤见 [Zotero 集成](zotero-integration.md#paper-cards-第一阶段验收)。
+
+`tests/integration/test_paper_cards.py` 用独立回环服务测试授权拒绝、部分上传重试、并发编辑、多个候选、
+旧卡片和旧索引兼容。Qt 测试经主窗口进入编辑器，验证关闭后恢复草稿、冲突对照、保存、预览和主动回忆。
+
+2026-11-18 在 Windows 上对源码开发版执行全量回归，147 项通过。另用独立的 Explorer 测试索引载入真实合成文献，
+经主窗口的卡片按钮从 Zotero 10.0.8 打开 Markdown 附件，验证预览正文和回忆显隐。
+两个版本重新封装后均通过隔离安装、启动自检和卸载。真实上传和接收端下载的范围见上述集成文档。
 
 [返回开发文档首页](README.md) · [返回文档总导航](../README.md)

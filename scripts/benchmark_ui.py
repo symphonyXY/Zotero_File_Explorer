@@ -22,7 +22,8 @@ from zotero_file_explorer.ui.theme import apply_theme
 from zotero_file_explorer.ui.windows import MainWindow, QuickWindow
 
 ROOT = Path(__file__).resolve().parents[1]
-EVIDENCE = ROOT / "docs/evidence"
+EVIDENCE = ROOT / "build/benchmark-ui"
+EVIDENCE.mkdir(parents=True, exist_ok=True)
 app = QApplication([])
 app.setQuitOnLastWindowClosed(False)
 paint_ms, paint_stamps = [], []

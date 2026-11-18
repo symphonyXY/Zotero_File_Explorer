@@ -2,12 +2,13 @@ import threading
 import time
 
 import pytest
-from PySide6.QtCore import QThread, QThreadPool, QTimer
+from PySide6.QtCore import QRect, Qt, QThread, QThreadPool, QTimer
 from PySide6.QtWidgets import QApplication
 
 from zotero_file_explorer.app import Controller
 from zotero_file_explorer.storage.config import ConfigStore
 from zotero_file_explorer.storage.index import SearchFilter
+from zotero_file_explorer.ui.theme import apply_theme
 from zotero_file_explorer.ui.workers import Task
 
 
@@ -61,6 +62,33 @@ def test_navigation_and_render_never_read_index_on_gui(controller, qtbot, monkey
     controller.main.query()
     qtbot.waitUntil(lambda: not controller.tasks)
     assert controller.main.view.model_data.rowCount() == 1
+
+
+@pytest.mark.parametrize("theme", ["light", "dark"])
+def test_navigation_selection_has_no_brackets(controller, qtbot, theme):
+    apply_theme(controller.app, theme)
+    nav = controller.main.navigation
+    leaf = nav.topLevelItem(0)
+    nav.setCurrentItem(leaf)
+    row = nav.visualItemRect(leaf)
+    # A leaf has no disclosure arrow. Its entire indentation should match the row fill.
+    gutter = nav.viewport().grab(QRect(0, row.top(), row.left(), row.height())).toImage()
+    assert not gutter.isNull()
+    fill = gutter.pixelColor(gutter.width() // 2, gutter.height() // 2)
+    for x in (0, gutter.width() - 1):
+        for y in (0, gutter.height() - 1):
+            assert gutter.pixelColor(x, y) == fill
+
+    library = nav.topLevelItem(1)
+    nav.setCurrentItem(library)
+    qtbot.keyClick(nav, Qt.Key.Key_Left)
+    qtbot.waitUntil(lambda: not library.isExpanded() and nav.state() == nav.State.NoState)
+    qtbot.keyClick(nav, Qt.Key.Key_Right)
+    qtbot.waitUntil(lambda: library.isExpanded() and nav.state() == nav.State.NoState)
+    collection = library.child(1).child(0)
+    nav.scrollToItem(collection)
+    qtbot.mouseClick(nav.viewport(), Qt.MouseButton.LeftButton, pos=nav.visualItemRect(collection).center())
+    assert controller.main.collection == "COLLECT1"
 
 
 def test_manual_choice_does_not_wait_for_sync_lock(controller, qtbot):

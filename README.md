@@ -6,12 +6,14 @@
 
 **在 Windows 上搜索、浏览和复制 Zotero 原始附件。**
 
-通过 Zotero Local API 只读获取文献，在本地快速检索，并把真实附件复制或拖放到其他应用。
+通过 Zotero Local API 获取文献，在本地快速检索，并把真实附件复制或拖放到其他应用。
 直接使用已有文件，不修改 Zotero 数据库，不搬移原件，也不建立第二套附件库。
 
-A read-only Windows desktop browser for Zotero attachments, with local search and native file copy and drag-and-drop.
+A Windows desktop browser for Zotero attachments with local search, native drag-and-drop and Markdown Paper Cards.
 
 ## 功能
+
+- **文献速览卡（1.1.0）**：在个人文献库创建 Markdown 子附件，编辑、预览和主动回忆。保存需 Zotero 10+ 本地写入授权，附件使用 Zotero 已配置的同步方式。[使用速览卡](docs/user/user-guide.md#文献速览卡)
 
 - **检索与浏览**：标题、作者、年份、DOI、标签、文件名搜索；按文献库、分类和文件类型筛选。
 - **附件管理视图**：展开多附件，区分原件、翻译及加工产物；支持人工确认主附件和分类。
@@ -21,10 +23,10 @@ A read-only Windows desktop browser for Zotero attachments, with local search an
 
 ## 安装与开始使用
 
-当前首版为 **1.0.0**。本地完整交付在 `releases/v1.0.0/`；GitHub 仓库公开后，安装包作为 Release 附件提供。
+Paper Cards 的 Windows 安装包为 **1.1.0**。[本版说明](docs/releases/v1.1.0.md)列出变更与验证范围。首版保存在 `releases/v1.0.0/`。
 源码仓库不包含安装器、Python 虚拟环境或用户文献。
 
-1. 运行 `ZoteroFileExplorer-1.0.0-Setup-x64.exe`，按当前用户安装，无需另装 Python。
+1. 从托盘退出旧版 Explorer，运行 `ZoteroFileExplorer-1.1.0-Setup-x64.exe`，按当前用户安装，无需另装 Python。
 2. 打开 Zotero，在“设置 → 高级”中开启“允许本机其他应用程序与 Zotero 通信”。
 3. 启动本程序，点击“立即同步”，随后搜索或选择文献。
 4. 使用 Ctrl+C 复制真实附件，再到目标应用粘贴；也可直接拖放。
@@ -32,13 +34,9 @@ A read-only Windows desktop browser for Zotero attachments, with local search an
 目标平台为 Windows 10 1809+ / Windows 11 x64；当前实机验证为 Windows 11。
 安装、数据目录与卸载说明见[安装指南](docs/user/installation.md)。
 
-## 界面
+## 操作
 
-![主窗口：中文浅色，合成文献示例](docs/images/main-window.png)
-
-![快捷窗口：深色主题，复制回执](docs/images/quick-window.png)
-
-截图只使用合成数据。更多操作见[用户指南](docs/user/user-guide.md)。
+主窗口与快捷窗口的操作见[用户指南](docs/user/user-guide.md)。
 
 | 操作 | 快捷键 |
 |---|---|
@@ -86,7 +84,7 @@ releases/                 本地版本归档；二进制不进入普通 Git 历�
 ## 边界与许可
 
 本程序不编辑文献、不解析 Zotero 原始数据库、不执行 PDF 翻译或云端同步。
-拖放接收能力取决于目标应用；Windows 10、跨屏 DPI 和跨应用人工拖放的未验证范围见[本版验证](docs/reports/validation-v1.0.0.md)。
+拖放接收能力取决于目标应用。已知兼容性范围见[版本说明](docs/releases/README.md)。
 
 应用代码和项目图标采用 [MIT](LICENSE)。Qt/PySide 等组件保留各自许可；再分发二进制时保留[第三方说明](THIRD_PARTY_NOTICES.md)及对应源码材料。
 这是独立项目，非 Zotero 官方产品；新图标不代表 Zotero 官方标识或背书。

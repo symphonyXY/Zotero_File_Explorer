@@ -128,7 +128,4 @@ result["uninstall_removed_icon"] = not installed_icon.exists()
 result["application_data_retained"] = (data / "self-check.json").exists()
 assert all(result[key] for key in ["uninstall_removed_exe", "uninstall_removed_shortcuts",
                                    "uninstall_removed_icon", "application_data_retained"])
-(ROOT / f"docs/evidence/installer-{__version__}.json").write_text(
-    json.dumps(result, indent=2), encoding="utf-8"
-)
 print(json.dumps(result, indent=2))

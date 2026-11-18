@@ -1,17 +1,16 @@
 # 安装与运行
 
-当前版本为新图标的首版 1.0.0。本地完整交付位于 releases/v1.0.0；
-仓库在线发布后，从 GitHub Release 下载 Setup-x64.exe 和同次校验材料。当前不提供虚构的远程下载地址。
+包含速览卡的本地安装包位于 `releases/v1.1.0/`，首版归档位于 `releases/v1.0.0/`。参见[本版说明](../releases/v1.1.0.md)。
 
 ## 环境
 
 目标平台为 Windows 10 1809+ / Windows 11 x64，实机验证为 Windows 11。
-通过 Zotero 本机 API 工作；具体 Zotero 版本和未覆盖范围以[验证记录](../reports/validation-v1.0.0.md)为准。
+通过 Zotero 本机 API 工作。文献速览卡支持 Zotero 10 或更新版本的个人库。
 安装包自带 Python/Qt，无需另装运行库。代码签名尚未完成。
 
 ## 安装或直接运行
 
-安装前退出已有程序及托盘实例，运行 ZoteroFileExplorer-1.0.0-Setup-x64.exe，按当前用户安装。
+安装前退出已有 Explorer 程序及托盘实例，运行 ZoteroFileExplorer-1.1.0-Setup-x64.exe，按当前用户安装。
 开始菜单提供主窗口与快捷窗口，桌面快捷方式可选；开机启动默认关闭。
 重装会更新已有、目标属于本安装目录的桌面快捷方式，即使未重新勾选桌面选项。
 快捷方式使用随安装包提供的独立图标，安装结束会通知 Windows 刷新；无须清空系统图标缓存。

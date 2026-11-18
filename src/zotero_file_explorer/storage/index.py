@@ -11,6 +11,7 @@ from pathlib import Path
 
 from ..core.classification import classify
 from ..core.models import AttachmentState, Record, choose_primary, normalize
+from ..core.paper_cards import is_paper_card, may_have_card_marker
 from ..services.paths import file_status
 from .config import atomic_json
 
@@ -29,6 +30,8 @@ class SearchFilter:
     offset: int = 0
     sort: str = "title"
     descending: bool = False
+    card: str = ""
+    include_card_only: bool = False
 
 
 SCHEMA = """
@@ -47,6 +50,8 @@ CREATE TABLE IF NOT EXISTS documents (
  doi TEXT, tags TEXT, collections TEXT, search TEXT, attachments TEXT,
  filename TEXT, type TEXT, size INTEGER, status TEXT, primary_key TEXT,
  PRIMARY KEY(instance,library,key));
+CREATE TABLE IF NOT EXISTS document_cards (
+ instance TEXT, library TEXT, key TEXT, card_state TEXT NOT NULL, PRIMARY KEY(instance,library,key));
 CREATE INDEX IF NOT EXISTS document_title ON documents(instance,title);
 CREATE INDEX IF NOT EXISTS document_library ON documents(instance,library);
 CREATE INDEX IF NOT EXISTS document_year ON documents(instance,year);
@@ -181,6 +186,7 @@ class Index:
                 ("items", "library"),
                 ("collections", "library"),
                 ("documents", "library"),
+                ("document_cards", "library"),
             ]:
                 for old in db.execute(f"SELECT DISTINCT {column} FROM {table} WHERE instance=?", (instance,)):
                     if old[0] not in ids:
@@ -190,7 +196,7 @@ class Index:
                     "INSERT OR REPLACE INTO libraries VALUES(?,?,?,?,?)",
                     (instance, library.id, library.name, library.prefix, version),
                 )
-                for table in ["items", "collections", "documents"]:
+                for table in ["items", "collections", "documents", "document_cards"]:
                     db.execute(f"DELETE FROM {table} WHERE instance=? AND library=?", (instance, library.id))
                 db.executemany(
                     "INSERT INTO items VALUES(?,?,?,?)",
@@ -226,10 +232,17 @@ class Index:
                     documents[parent] = record
             elif record.kind not in {"note", "annotation"}:
                 documents[record.key] = record
-        rows = []
+        rows, card_rows = [], []
         for key, record in documents.items():
             attachments = []
+            cards = []
+            unchecked = False
             for child in children.get(key, []):
+                if is_paper_card(child):
+                    cards.append(file_status(child.path)[0])
+                    continue
+                if may_have_card_marker(child) and child.path_error == "card_download":
+                    unchecked = True
                 override = self.override(instance, library, child.key)
                 path = override.get("path") or child.path
                 effective = replace(child, path=path, filename=Path(path).name if path else child.filename)
@@ -250,8 +263,15 @@ class Index:
                     }
                 )
             primary = choose_primary(attachments, self.override(instance, library, key).get("primary", ""))
-            if not attachments:
-                continue
+            card_state = "card_none"
+            if record.kind == "attachment" or library != "user:0":
+                card_state = "card_na"
+            elif len(cards) > 1:
+                card_state = "card_multiple"
+            elif cards:
+                card_state = "card_exists" if cards[0] == "available" else "card_unavailable"
+            elif unchecked:
+                card_state = "card_unknown"
             text = " ".join(
                 [
                     record.title,
@@ -282,12 +302,15 @@ class Index:
                     primary["key"] if primary else "",
                 )
             )
+            card_rows.append((instance, library, key, card_state))
         db.executemany("INSERT INTO documents VALUES(" + ",".join("?" * 16) + ")", rows)
+        db.executemany("INSERT INTO document_cards VALUES(?,?,?,?)", card_rows)
 
     def reclassify(self, rules: list[dict]) -> None:
         instance = self.active_instance()
         with self.lock, self.connection() as db:
             db.execute("DELETE FROM documents WHERE instance=?", (instance,))
+            db.execute("DELETE FROM document_cards WHERE instance=?", (instance,))
             for library in self.libraries(instance):
                 self._project(db, instance, library["id"], self.records(instance, library["id"]), rules)
 
@@ -296,9 +319,17 @@ class Index:
         if filters.library:
             clauses.append("library=?")
             params.append(filters.library)
-        if filters.mode == "all":
-            clauses.append("primary_key!=''")
-        elif filters.mode in {"review", "translated", "errors"}:
+        if filters.card == "with":
+            clauses.append("card_state IN ('card_exists','card_multiple','card_unavailable')")
+        elif filters.card == "without":
+            clauses.append("card_state='card_none'")
+        elif filters.mode == "all":
+            if filters.include_card_only:
+                clauses.append("(primary_key!='' OR card_state IN "
+                               "('card_exists','card_multiple','card_unavailable'))")
+            else:
+                clauses.append("primary_key!=''")
+        if filters.mode in {"review", "translated", "errors"}:
             if filters.mode == "errors":
                 clauses.append(
                     "EXISTS(SELECT 1 FROM json_each(attachments) WHERE "
@@ -347,13 +378,15 @@ class Index:
         order = (
             filters.sort
             if filters.sort
-            in {"title", "authors", "year", "doi", "type", "filename", "size", "library", "status"}
+            in {"title", "authors", "year", "doi", "type", "filename", "size",
+                "library", "status", "card_state"}
             else "title"
         )
         with self.connection() as db:
-            count = db.execute("SELECT count(*) FROM documents WHERE " + where, params).fetchone()[0]
+            source = " FROM documents LEFT JOIN document_cards USING(instance,library,key) WHERE "
+            count = db.execute("SELECT count(*)" + source + where, params).fetchone()[0]
             rows = db.execute(
-                "SELECT * FROM documents WHERE "
+                "SELECT documents.*, COALESCE(card_state,'card_unknown') AS card_state" + source
                 + where
                 + f" ORDER BY {order} COLLATE NOCASE "
                 + ("DESC" if filters.descending else "ASC")
@@ -369,5 +402,5 @@ class Index:
     def rebuild(self) -> None:
         """Only clear this application's index. Separate overrides.json is retained."""
         with self.lock, self.connection() as db:
-            for table in ["documents", "items", "collections", "libraries", "meta"]:
+            for table in ["document_cards", "documents", "items", "collections", "libraries", "meta"]:
                 db.execute(f"DELETE FROM {table}")

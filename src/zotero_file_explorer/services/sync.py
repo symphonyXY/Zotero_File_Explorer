@@ -5,6 +5,7 @@ from pathlib import Path
 
 from ..api.client import APIError, LocalAPI
 from ..core.models import SUPPORTED, parse_record
+from ..core.paper_cards import has_card_marker, is_paper_card, may_have_card_marker
 from ..storage.config import Settings
 from ..storage.index import Index
 from .paths import fallback_path, file_status, file_url_to_path
@@ -62,7 +63,9 @@ class SyncService:
                     raise APIError(0, "cancelled")
                 if record.kind != "attachment" or record.link_mode == "linked_url":
                     continue
-                if Path(record.filename or record.path).suffix.lower() not in SUPPORTED:
+                supported = Path(record.filename or record.path).suffix.lower() in SUPPORTED
+                card_file = is_paper_card(record) or may_have_card_marker(record)
+                if not supported and not card_file:
                     continue
                 if force_paths or record.key in changed_keys or file_status(record.path)[0] != "available":
                     previous_path = old.get(record.key).path if record.key in old else ""
@@ -85,10 +88,18 @@ class SyncService:
                     if record.path.startswith(("storage:", "attachments:")):
                         record.path = ""
                     # Preserve the API filename independently from attachment title.
-                    if record.path:
+                    if record.path and not card_file:
                         record.filename = Path(record.path).name
                     elif not record.filename and metadata_path:
                         record.filename = Path(metadata_path).name
+                record.card_marker = False
+                if may_have_card_marker(record) and not is_paper_card(record):
+                    try:
+                        with Path(record.path).open("rb") as stream:
+                            record.card_marker = has_card_marker(stream.read(8192))
+                        record.path_error = ""
+                    except OSError:
+                        record.path_error = "card_download"
                 if number % 100 == 0:
                     progress(f"{library.name} · {number + 1}/{len(records)}")
             final = self.api.get(library.prefix + "/items", {"format": "versions"})

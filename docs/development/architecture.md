@@ -6,6 +6,9 @@
 
 API、同步一致性、实例身份与附件分类的详细约束见 [Zotero 集成](zotero-integration.md)。
 
+速览卡编辑器通过独立服务向本机 Zotero 申请写入授权。每篇文献的可恢复草稿位于应用数据目录，
+保存后从同一子附件回读正文，Zotero 自行安排 WebDAV 同步。本应用索引只缓存卡片状态。
+
 `storage/index.py` 保存最少元数据和派生搜索字段。原始记录用于增量合并，documents 为界面检索投影。`overrides.json` 单独保存手动分类、主附件和路径映射，重建索引保留它。SQLite 损坏时把损坏库及 WAL/SHM 改为带时间戳文件，建立新库，保留诊断线索。无法读出的 overrides 禁止静默覆盖。
 
 ## 搜索与界面

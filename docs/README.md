@@ -12,7 +12,7 @@
 | [版本演进](development/versioning.md) / [版本索引](releases/README.md) | 每个版本做了什么、为什么、如何验证 |
 | [构建发布](../releases/README.md) | 构建、候选交付、正式归档 |
 | [安装](user/installation.md) / [使用](user/user-guide.md) | 用户操作 |
-| [验证报告](reports/README.md) / [证据索引](evidence/README.md) | 当前结果及保留证据的用途 |
+| [来源索引](evidence/README.md) | 图标、构建及第三方来源 |
 | [技术调研](research.md) / [第三方说明](../THIRD_PARTY_NOTICES.md) | 设计依据、许可证和对应源码 |
 
 各专题维护唯一正文，版本说明记录变化和验证边界，经审查的必要证据进入仓库。本地清理记录保存在 work/cleanup。

@@ -11,7 +11,7 @@ if (-not $SkipTests) {
     & $python -m ruff check src tests scripts
     if ($LASTEXITCODE -ne 0) { throw 'Lint failed.' }
     $testTemp = Join-Path $projectRoot ('build\pytest-build-' + [guid]::NewGuid().ToString('N'))
-    & $python -m pytest -q "--basetemp=$testTemp" --junitxml="docs/evidence/tests-$version.xml"
+    & $python -m pytest -q "--basetemp=$testTemp"
     if ($LASTEXITCODE -ne 0) { throw 'Tests failed.' }
 }
 & $python scripts/check_docs.py

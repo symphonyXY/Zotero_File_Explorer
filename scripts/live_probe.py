@@ -14,7 +14,7 @@ from zotero_file_explorer.storage.index import Index, SearchFilter
 
 root = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
-parser.add_argument("--output", type=Path, default=root / "docs/evidence/live-zotero-current.json")
+parser.add_argument("--output", type=Path, default=root / "build/live-zotero-current.json")
 args = parser.parse_args()
 directories, base = detected_directories()
 settings = Settings(data_directory=directories[0] if directories else "", attachment_base=base)
@@ -46,6 +46,7 @@ report = {
     "offline_reopen_papers": Index(index.directory).search(SearchFilter())[1],
     "writes_to_zotero": 0,
 }
+args.output.parent.mkdir(parents=True, exist_ok=True)
 args.output.write_text(
     json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8"
 )

@@ -1,9 +1,9 @@
 import hashlib
 import json
-import zipfile
 from pathlib import Path
 
 from check_repository import audit_repository
+from delivery_files import write_sources
 
 from zotero_file_explorer import __version__
 
@@ -12,27 +12,9 @@ DIST = ROOT / "dist"
 report = audit_repository(ROOT)
 if report["errors"]:
     raise ValueError("Publication audit failed: " + "; ".join(report["errors"]))
-# A per-release checksum includes this ZIP's hash; do not put it back in the ZIP.
-report["files"] = [
-    entry for entry in report["files"]
-    if not (entry["path"].startswith("releases/v") and entry["path"].endswith("/SHA256SUMS.txt"))
-]
-report["total_bytes"] = sum(entry["bytes"] for entry in report["files"])
 source = DIST / f"source/ZoteroFileExplorer-{__version__}-Source.zip"
-source.parent.mkdir(parents=True, exist_ok=True)
-temporary = source.with_suffix(".zip.tmp")
-with zipfile.ZipFile(temporary, "x", zipfile.ZIP_DEFLATED, compresslevel=6) as archive:
-    for entry in report["files"]:
-        archive.write(ROOT / entry["path"], entry["path"])
-for path in [temporary]:
-    with zipfile.ZipFile(path) as archive:
-        assert archive.testzip() is None
-        assert set(archive.namelist()) == {entry["path"] for entry in report["files"]}
-        for entry in report["files"]:
-            assert hashlib.sha256(archive.read(entry["path"])).hexdigest() == entry["sha256"]
-temporary.replace(source)
+write_sources(source, __version__, (e["path"] for e in report["files"]), lambda n: (ROOT / n).read_bytes())
 manifest = source.with_suffix(".manifest.json")
-manifest.write_text(json.dumps(report, indent=2), encoding="utf-8")
 checksums = {
     str(p.relative_to(DIST)).replace("\\", "/"): hashlib.sha256(p.read_bytes()).hexdigest()
     for p in DIST.rglob("*")

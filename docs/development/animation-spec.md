@@ -67,7 +67,7 @@ Windows `SystemParametersInfoW(SPI_GETCLIENTAREAANIMATION)` 为 false 时优先�
 后者不等于显示器呈现帧率；240 Hz 屏幕报告值也不证明应用达到 240 FPS。
 `scripts/benchmark_feedback.py --data-dir <新隔离目录> --output <新报告路径>` 专门复验 500 / 5,000 / 20,000 篇的悬停、展开、查询和反复唤出。
 分开记录模型填充、CPU paint、事件循环间隔及动画对象数；输入驱动耗时包含在事件循环样本中，单轮对照不代表稳定加速。
-本版行为和未测项见[验证报告](../reports/validation-v1.0.0.md)。
+本版行为和未测项见[首版说明](../releases/v1.0.0.md)。
 真实切换主题等全局操作需单独测量，不能据局部 paint 时间宣称稳定 60 FPS。
 
 ## 接口依据

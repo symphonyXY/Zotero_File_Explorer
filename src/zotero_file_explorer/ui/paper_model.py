@@ -9,7 +9,7 @@ from PySide6.QtGui import QFont
 
 ROLE = int(Qt.ItemDataRole.UserRole) + 1
 ROOT_INDEX = QModelIndex()
-COLUMNS = ["title", "authors", "year", "doi", "type", "filename", "size", "library", "status"]
+COLUMNS = ["title", "authors", "year", "doi", "type", "filename", "size", "library", "status", "card_state"]
 
 
 def human_size(size: int) -> str:
@@ -121,6 +121,12 @@ class PaperModel(QAbstractItemModel):
                 "document_key": record["key"],
                 "attachment": primary,
                 "is_document": True,
+                "title": record["title"],
+                "authors": record["authors"],
+                "year": record["year"],
+                "doi": record["doi"],
+                "original_path": (primary or {}).get("path", ""),
+                "card_state": record.get("card_state", "card_unknown"),
             }
             values = (
                 record["title"],
@@ -132,6 +138,7 @@ class PaperModel(QAbstractItemModel):
                 human_size(record["size"]),
                 libraries.get(record["library"], record["library"]),
                 self.tr(record["status"]),
+                self.tr(payload["card_state"]),
             )
             node = Row(len(rows), tuple(map(str, values)), payload)
             for attachment in shown:
@@ -145,6 +152,7 @@ class PaperModel(QAbstractItemModel):
                     human_size(attachment["size"]),
                     self.tr(attachment["state"]),
                     self.tr(attachment["status"]),
+                    "",
                 )
                 node.children.append(
                     Row(

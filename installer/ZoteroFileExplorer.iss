@@ -1,5 +1,5 @@
 #ifndef AppVersion
-  #define AppVersion "1.0.0"
+  #define AppVersion "1.1.0"
 #endif
 #define AppIconSource SourcePath + "..\assets\icons\app.ico"
 #define AppIconName "app-" + GetSHA256OfFile(AppIconSource) + ".ico"
@@ -14,6 +14,7 @@
 AppId={#AppIdentity}
 AppName=Zotero File Explorer
 AppVersion={#AppVersion}
+UninstallDisplayName=Zotero File Explorer{#AppSuffix}
 AppPublisher=Zotero File Explorer
 DefaultDirName={localappdata}\Programs\ZoteroFileExplorer
 DefaultGroupName=Zotero File Explorer

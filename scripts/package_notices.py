@@ -5,23 +5,23 @@ import shutil
 import sys
 from pathlib import Path
 
+from delivery_files import delivery_docs, source_member
+
 from zotero_file_explorer import __version__
 
 ROOT = Path(__file__).resolve().parents[1]
 TARGET = ROOT / "build/release/ZoteroFileExplorer"
 TARGET.mkdir(parents=True, exist_ok=True)
-for name in ["LICENSE", "THIRD_PARTY_NOTICES.md", "README.md", "CONTRIBUTING.md", "SECURITY.md"]:
+for name in ["LICENSE", "THIRD_PARTY_NOTICES.md"]:
     shutil.copy2(ROOT / name, TARGET / name)
+for name, content in delivery_docs(__version__, lambda name: (ROOT / name).read_bytes()).items():
+    path = TARGET / name
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(content)
 readme_icon = TARGET / "assets/icons/app.png"
 readme_icon.parent.mkdir(parents=True, exist_ok=True)
 shutil.copy2(ROOT / "assets/icons/app.png", readme_icon)
 shutil.copytree(ROOT / "licenses", TARGET / "licenses", dirs_exist_ok=True)
-shutil.copytree(
-    ROOT / "docs",
-    TARGET / "docs",
-    dirs_exist_ok=True,
-    ignore=shutil.ignore_patterns("evidence", "final-report.md", "cleanup.md"),
-)
 license_path = Path(sys.base_prefix) / "LICENSE.txt"
 if license_path.exists():
     shutil.copy2(license_path, TARGET / "licenses/Python-LICENSE.txt")
@@ -40,11 +40,7 @@ sources = {
     for directory in ["src", "installer", "scripts"]
     for p in (ROOT / directory).rglob("*")
     if p.is_file()
-    and "__pycache__" not in p.parts
-    and not any(part.endswith(".egg-info") for part in p.parts)
+    and source_member(p.relative_to(ROOT).as_posix())
 }
-(ROOT / f"docs/evidence/build-sources-{__version__}.json").write_text(
-    json.dumps(sources, indent=2), encoding="utf-8"
-)
 (TARGET / "build-sources.json").write_text(json.dumps(sources, indent=2), encoding="utf-8")
 print("Bundled dependency notices and source hashes")

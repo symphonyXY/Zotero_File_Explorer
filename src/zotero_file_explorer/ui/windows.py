@@ -26,8 +26,8 @@ from .motion import FeedbackLabel
 from .paper_view import COLUMNS, PaperView
 from .theme import ui_icon
 
-DEFAULT_WIDTHS = [420, 140, 68, 180, 65, 240, 85, 140, 150]
-DEFAULT_ORDER = [0, 1, 2, 4, 8, 5, 6, 7, 3]
+DEFAULT_WIDTHS = [420, 140, 68, 180, 65, 240, 85, 140, 150, 100]
+DEFAULT_ORDER = [0, 1, 2, 4, 8, 9, 5, 6, 7, 3]
 DEFAULT_HIDDEN = [3, 5, 6, 7]
 
 
@@ -302,6 +302,9 @@ class MainWindow(SearchWindow):
         self.copy_button.clicked.connect(lambda: controller.file_action("copy_files", self.view))
         self.action_buttons["copy_files"] = self.copy_button
         top.addWidget(self.copy_button)
+        self.card_button = QPushButton(self.tr("card_state"))
+        self.card_button.clicked.connect(lambda: controller.file_action("card_state", self.view))
+        top.addWidget(self.card_button)
         self.sync_button = QPushButton(self.tr("refresh"))
         self.sync_button.setIcon(ui_icon("refresh"))
         self.sync_button.clicked.connect(lambda: controller.synchronize(force_paths=True))
@@ -346,6 +349,10 @@ class MainWindow(SearchWindow):
         self.tag.setPlaceholderText(self.tr("any_tag"))
         self.tag.setMaximumWidth(140)
         filters.addWidget(self.filter_field("tag", self.tag))
+        self.card_filter = QComboBox()
+        for key, value in [("card_any", ""), ("card_exists", "with"), ("card_none", "without")]:
+            self.card_filter.addItem(self.tr(key), value)
+        filters.addWidget(self.filter_field("card_state", self.card_filter))
         self.available = QCheckBox(self.tr("available_only"))
         filters.addWidget(self.available, 0, Qt.AlignmentFlag.AlignBottom)
         right.addLayout(filters)
@@ -398,6 +405,7 @@ class MainWindow(SearchWindow):
             widget.textChanged.connect(self.filters_changed)
         self.library.currentIndexChanged.connect(self.library_changed)
         self.file_type.currentIndexChanged.connect(self.filters_changed)
+        self.card_filter.currentIndexChanged.connect(self.filters_changed)
         self.available.toggled.connect(self.filters_changed)
         shortcut = QShortcut(QKeySequence("Ctrl+F"), self)
         shortcut.activated.connect(self.search.setFocus)
@@ -542,6 +550,8 @@ class MainWindow(SearchWindow):
             offset=self.offset,
             sort=self.sort,
             descending=self.descending,
+            card=self.card_filter.currentData() or "",
+            include_card_only=True,
         )
 
     def query(self):
@@ -561,6 +571,10 @@ class MainWindow(SearchWindow):
 
     def update_search_controls(self):
         super().update_search_controls()
+        selected = self.view.selected_data() if self.results_ready else []
+        state = selected[0]["card_state"] if len(selected) == 1 else "card_na"
+        self.card_button.setEnabled(state != "card_na")
+        self.card_button.setText(self.tr("card_create" if state == "card_none" else "card_view"))
         self.previous.setEnabled(self.results_ready and self.offset > 0)
         self.more.setEnabled(self.results_ready and self.offset + self.limit < self.total)
 
@@ -632,6 +646,7 @@ class QuickWindow(SearchWindow):
         self.view.header().setSectionResizeMode(8, QHeaderView.ResizeMode.ResizeToContents)
         for column in range(1, 8):
             self.view.setColumnHidden(column, True)
+        self.view.setColumnHidden(9, True)
         self.view.actionRequested.connect(lambda key: controller.file_action(key, self.view))
         self.view.copyRequested.connect(lambda: controller.file_action("copy_files", self.view))
         self.view.operationError.connect(controller.notice)

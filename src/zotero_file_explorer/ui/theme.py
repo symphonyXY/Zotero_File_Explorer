@@ -133,7 +133,7 @@ def apply_theme(app, theme="system"):
         QTreeView:focus {{ border-color: #587bf5; }}
         QTreeView::item:selected {{ background: #365ff0; color: white; }}
         QTreeWidget#navigation {{ background: transparent; border: none; }}
-        QTreeWidget#navigation::item {{ min-height: 30px; padding: 4px 6px; border-radius: 6px; }}
+        QTreeWidget#navigation::item {{ min-height: 30px; padding: 4px 6px; }}
         QTreeWidget#navigation::item:selected {{ background: {hover}; color: {accent_text}; }}
         QHeaderView::section {{ background: {alternate}; color: {muted}; border: none;
           border-bottom: 1px solid {border}; padding: 10px 8px; font-size: 9pt; font-weight: 600; }}

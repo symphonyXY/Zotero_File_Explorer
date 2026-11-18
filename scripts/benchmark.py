@@ -20,7 +20,7 @@ from zotero_file_explorer.ui.paper_view import PaperView
 
 root = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
-parser.add_argument("--output", type=Path, default=root / "docs/evidence/performance-current.json")
+parser.add_argument("--output", type=Path, default=root / "build/performance-current.json")
 args = parser.parse_args()
 app = QApplication([])
 report = {
@@ -118,4 +118,5 @@ for count in [500, 5000, 20000]:
     view.deleteLater()
     app.processEvents()
     del records
+args.output.parent.mkdir(parents=True, exist_ok=True)
 args.output.write_text(json.dumps(report, indent=2), encoding="utf-8")

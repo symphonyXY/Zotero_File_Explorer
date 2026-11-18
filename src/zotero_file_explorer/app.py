@@ -25,12 +25,15 @@ from .platform.windows import (
     set_app_id,
     set_autostart,
 )
+from .services.paper_cards import PaperCards
 from .services.paths import detected_directories, valid_file_paths
 from .services.sync import SyncService
+from .storage.card_drafts import CardDrafts
 from .storage.config import ConfigStore
 from .storage.index import Index
 from .ui.dialogs import RulesDialog, SettingsDialog
 from .ui.motion import MotionStyle, MotionSystem
+from .ui.paper_card import PaperCardDialog
 from .ui.theme import apply_theme
 from .ui.windows import MainWindow, QuickWindow
 from .ui.workers import Task
@@ -47,6 +50,9 @@ class Controller(QObject):
         app.setStyle(MotionStyle(self.motion.policy))
         self.tr = Translator(self.settings.language)
         self.index = Index(config.directory)
+        self.card_drafts = CardDrafts(config.directory)
+        self.card_service = self.card_dialog = None
+        self.quit_after_card = False
         self.icon = QIcon(str(resource_path("assets/icons/app.ico")))
         self.app.setWindowIcon(self.icon)
         self.pool = QThreadPool(self)
@@ -59,6 +65,7 @@ class Controller(QObject):
         self.preparing_files = False
         self.syncing = False
         self.pending_force_sync = False
+        self.pending_card_sync = False
         self.quitting = False
         self.cancel = threading.Event()
         self.connection_text = self.tr("offline")
@@ -206,12 +213,20 @@ class Controller(QObject):
             self.quick.query()
             if not error and settings.rules != self.settings.rules:
                 self.reclassify()
-            if self.pending_force_sync:
+            if self.pending_force_sync or self.pending_card_sync:
+                force = self.pending_force_sync
                 self.pending_force_sync = False
-                QTimer.singleShot(100, lambda: self.synchronize(force_paths=True))
+                self.pending_card_sync = False
+                QTimer.singleShot(100, lambda: self.synchronize(force_paths=force))
 
         task.signals.finished.connect(finished)
         self.pool.start(task)
+
+    def refresh_after_card(self):
+        if self.syncing:
+            self.pending_card_sync = True
+        else:
+            self.synchronize()
 
     def search(self, window, filters):
         window.debounce.stop()
@@ -338,6 +353,33 @@ class Controller(QObject):
         window = view.window()
         if window in {self.main, self.quick} and not window.results_ready:
             return
+        if key == "card_state" or (key == "details" and window is self.main):
+            selected = view.selected_data()
+            if not selected or (key == "card_state" and len(selected) != 1):
+                return
+            paper = selected[0]
+            if self.card_dialog:
+                self.card_dialog.raise_()
+                return
+            url = self.settings.api_url
+            if (not self.card_service or self.card_service.api.server_id != paper["instance"]
+                    or self.card_endpoint != url):
+                self.card_service = PaperCards(url, paper["instance"])
+                self.card_endpoint = url
+            dialog = PaperCardDialog(self, paper, self.card_service, details=key == "details",
+                                     create=key == "card_state" and paper["card_state"] == "card_none")
+            self.card_dialog = dialog
+
+            def closed():
+                self.card_dialog = None
+                dialog.deleteLater()
+                if self.quit_after_card:
+                    self.quit_after_card = False
+                    QTimer.singleShot(0, self.quit)
+
+            dialog.finished.connect(closed)
+            dialog.open()
+            return
         attachments = view.selected_attachments(originals_only=key in {"copy_files", "primary", "drag"})
         if not attachments:
             self.notice("no_available_files")
@@ -419,6 +461,9 @@ class Controller(QObject):
         dialog.deleteLater()
 
     def show_settings(self):
+        if self.card_dialog:
+            self.card_dialog.raise_()
+            return
         dialog = SettingsDialog(self.settings, self.tr, self.main, submit=self.submit)
         if dialog.exec() != QDialog.DialogCode.Accepted:
             dialog.deleteLater()
@@ -490,7 +535,12 @@ class Controller(QObject):
     def quit(self):
         if self.quitting:
             return
+        if self.card_dialog:
+            self.quit_after_card = True
+            self.card_dialog.reject()
+            return
         self.quitting = True
+        self.card_drafts.executor.shutdown(wait=False)
         self.cancel.set()
         self.poll.stop()
         self.hotkey.unregister()

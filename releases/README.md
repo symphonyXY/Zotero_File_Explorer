@@ -1,9 +1,9 @@
 # 构建、归档与 GitHub Release
 
-当前唯一版本是采用新图标的 **1.0.0**。完整本地交付归档到 releases/v1.0.0；
+含 Paper Cards 的安装包见 [1.1.0 说明](../docs/releases/v1.1.0.md)。首版完整交付归档到 releases/v1.0.0；
 dist 是构建暂存输出，build 是编译与验证工作区。
 这些暂存目录在归档核验后可清理，按需重建；build/tools 中的本地编译器保留复用。
-本地归档不代表已经创建 GitHub 仓库或在线 Release。
+本地归档与 GitHub Release 分别管理。
 
 ## 构建
 
@@ -50,6 +50,6 @@ archive_delivery.py 先按审查清单生成并逐文件校验 dist/source，再
 按[版本规则](../docs/development/versioning.md)维护后续增量。
 仅在用户明确要求或证明替代关系后清理旧交付；先落盘清单、检查绝对边界、reparse point、硬链接、占用与哈希，再逐文件操作。
 第三方对应源码及 notices 随交付保留。每次任务结束执行[维护清单](../docs/development/maintenance.md)。
-版本说明、实际验证和已知限制见[1.0.0](../docs/releases/v1.0.0.md)与[验证报告](../docs/reports/validation-v1.0.0.md)。
+版本说明和已知限制见[1.0.0](../docs/releases/v1.0.0.md)和[1.1.0](../docs/releases/v1.1.0.md)。
 
 [文档导航](../docs/README.md) · [开发手册](../docs/development/README.md) · [GitHub 准备](../docs/development/github.md)

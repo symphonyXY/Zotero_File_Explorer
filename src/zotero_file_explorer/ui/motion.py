@@ -29,6 +29,7 @@ from PySide6.QtWidgets import (
     QTreeView,
     QWidget,
 )
+from shiboken6 import isValid
 
 from ..platform.windows import animations_enabled
 
@@ -207,7 +208,9 @@ class WindowEntrance(QObject):
 
     def finish(self):
         self.animation.stop()
-        self.window.setWindowOpacity(1)
+        # Windows can send Hide while Qt is tearing down a child dialog.
+        if isValid(self.window):
+            self.window.setWindowOpacity(1)
 
     def eventFilter(self, obj, event):
         if event.type() == QEvent.Type.Show:

@@ -47,6 +47,7 @@ class Record:
     version: int = 0
     state: str = AttachmentState.EXCLUDED
     reason: str = ""
+    card_marker: bool = False
 
 
 def parse_record(obj: dict[str, Any]) -> Record:

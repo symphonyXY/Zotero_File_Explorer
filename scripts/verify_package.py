@@ -59,9 +59,6 @@ assert not list(binary_root.rglob("concepts"))
 assert not list(binary_root.rglob("app-source.png"))
 result["dlls"] = sorted(p.name for p in binary_root.rglob("*.dll"))
 assert not list(binary_root.rglob("*.pdf")) and not list(binary_root.rglob("*.sqlite*"))
-(ROOT / f"docs/evidence/package-{__version__}.json").write_text(
-    json.dumps(result, indent=2), encoding="utf-8"
-)
 (ROOT / "dist/SHA256SUMS.txt").write_text(
     result["installer_sha256"] + "  " + installer.name + "\n", encoding="ascii"
 )

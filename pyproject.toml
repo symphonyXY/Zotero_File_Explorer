@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "zotero-file-explorer"
 dynamic = ["version"]
-description = "Read-only Zotero original attachment browser for Windows"
+description = "Zotero original attachment browser and Markdown Paper Cards for Windows"
 requires-python = ">=3.11,<3.15"
 dependencies = ["PySide6-Essentials==6.10.2"]
 

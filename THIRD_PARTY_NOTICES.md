@@ -1,6 +1,6 @@
 # Third-party components and corresponding sources
 
-The application code is MIT-licensed. No Zotero, PDF2zh, ZotMoov or PyZotero implementation is copied into the application. Their protocol and naming behavior was studied; repository licenses and commits are recorded in docs/research.md.
+The application code is MIT-licensed. No Zotero, PDF2zh, ZotMoov or PyZotero implementation is copied into the application. Their protocol and naming behavior was studied for interoperability.
 
 Runtime components retain their own licenses:
 
@@ -15,10 +15,10 @@ Runtime components retain their own licenses:
 | Microsoft Visual C++ runtime components | Microsoft redistributable terms, supplied by the unmodified Python/Qt runtime distributions; not application source |
 | Inno Setup | Inno Setup License, original compiler/installer authors Jordan Russell and Martijn Laan; used to create the installer |
 
-Exact dependency versions and actual packaged DLLs appear in dependency-versions.json and docs/evidence/package-1.0.0.json. The development-only pytest, pytest-qt, Ruff, Pillow and psutil packages are not runtime dependencies or bundled libraries.
+Exact dependency versions appear in dependency-versions.json in the application directory. The shared libraries are under _internal.
 
-LGPL-covered shared libraries are left in separate, dynamically loaded files under `_internal`. Recipients may modify or replace these libraries with compatible versions, and may reverse-engineer the application as necessary to debug such modifications. This application imposes no restrictions on those LGPL rights. The application source and build configuration are provided with the delivery. Complete upstream source archives for the distributed Qt modules and PySide/shiboken version are provided beside the installer in `dist/ThirdPartySources/`; retain that directory when redistributing. Original LICENSES, copyright notices and qt_attribution.json files extracted from those exact sources are included in `licenses/`. Nothing in the application MIT license relicenses these components.
+LGPL-covered shared libraries are left in separate, dynamically loaded files under `_internal`. Recipients may modify or replace these libraries with compatible versions, and may reverse-engineer the application as necessary to debug such modifications. This application imposes no restrictions on those LGPL rights. The application source and build configuration are provided with the delivery. Complete upstream source archives for the distributed Qt modules and PySide/shiboken version are provided beside the installer in `ThirdPartySources/`; retain that directory when redistributing. Original LICENSES, copyright notices and qt_attribution.json files extracted from those exact sources are included in `licenses/`. Nothing in the application MIT license relicenses these components.
 
-The application icon is the user-selected AI-generated concept 06-fusion-minimal. Its retained source is assets/icons/app-source.png; sizes and hashes are recorded in docs/evidence/icon.json. This project artwork is distributed under the project's MIT license. It is not an official Zotero logo and does not imply endorsement by Zotero.
+The application icon is the user-selected AI-generated concept 06-fusion-minimal. The source archive includes the original artwork at assets/icons/app-source.png. This project artwork is distributed under the project's MIT license. It is not an official Zotero logo and does not imply endorsement by Zotero.
 
 The Inno simplified-Chinese message file is the official project message translation by Zhenghan Yang (Kira), obtained from the upstream Inno Setup main branch, with its original attribution retained in installer/ChineseSimplified.isl.

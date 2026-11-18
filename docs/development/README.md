@@ -4,7 +4,7 @@
 
 ## 开发目标和技术栈
 
-构建只读、响应及时的 Zotero 原始附件桌面浏览器；保护原件并保留 Windows 原生复制/拖放。
+构建响应及时的 Zotero 原始附件桌面浏览器，保护原件并保留 Windows 原生复制/拖放。速览卡保存经 Zotero 本机授权。
 Python 支持 3.11–3.14，开发脚本默认使用 3.13；PySide6-Essentials 6.10.2、Qt Widgets、QTreeView、QThreadPool、SQLite。
 依赖以 [pyproject.toml](../../pyproject.toml) 和 [requirements-dev.lock](../../requirements-dev.lock) 为准。
 没有应用 QML 树，不引入无用 UI 框架。
@@ -58,9 +58,7 @@ tests/fixtures/               测试夹具说明
 docs/development/             总开发文档与专题规范
 docs/user/                    安装及使用
 docs/releases/                逐版本说明
-docs/reports/                 当前版本验证报告
-docs/images/                  合成数据界面截图
-docs/evidence/                经审查的可公开证据
+docs/evidence/                图标、构建与第三方来源
 releases/README.md            正式发布归档规则
 ```
 
@@ -84,6 +82,6 @@ releases/README.md            正式发布归档规则
 
 [GitHub 仓库准备](github.md)
 
-[首版能力与扩展起点](../releases/v1.0.0.md) · [逐版本说明](../releases/README.md) · [构建发布](../../releases/README.md) · [验证报告](../reports/README.md)
+[首版能力与扩展起点](../releases/v1.0.0.md) · [逐版本说明](../releases/README.md) · [构建发布](../../releases/README.md)
 
 [返回文档总导航](../README.md) · [返回项目首页](../../README.md)
